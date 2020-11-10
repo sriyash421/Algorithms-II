@@ -203,7 +203,8 @@ void contzone(POINT *UH, int uh, POINT *LH, int lh, int r, LINE *T, ARC *A){
             A[a] = get_arc(LH[i], A[a-1].end, -PI);
         else
             A[a] = get_arc(LH[i], A[a-1].end, get_arc_angle(temp, 'L'));
-        T[t] = get_line(get_segment_point(temp,LH[i],r),get_segment_point(temp,LH[i+1],r));
+        if(i != lh-1)
+            T[t] = get_line(get_segment_point(temp,LH[i],r),get_segment_point(temp,LH[i+1],r));
         a++; t++;
     }
 }
@@ -215,7 +216,7 @@ void printcontzone(int uh, int lh, LINE *T, ARC *A){
         if(i==uh) printf("--- Lower section\n");
 
         printf("    Arc     : (%0.15lf,%0.15lf) From %0.15lf to %0.15lf\n", A[i].center.x, A[i].center.y, A[i].start, A[i].end);
-        if(i != uh-1)
+        if(i != uh-1 && i != uh+lh-1)
             printf("    Tangent : From (%0.15lf,%0.15lf) to (%0.15lf,%0.15lf)\n", T[i].p1.x, T[i].p1.y, T[i].p2.x, T[i].p2.y);
     }
 }
@@ -227,17 +228,19 @@ void print(POINT *S, int n){
 
 int main(){
     /*Main function with required i/o and function calls*/
-    printf("Input file name : ");
-    char *fname = (char *)malloc(sizeof(char)*20);
-    scanf("%s",fname);
-    FILE *fin = fopen(fname, "r");
+    // printf("Input file name : ");
+    // char *fname = (char *)malloc(sizeof(char)*20);
+    // scanf("%s",fname);
+    // FILE *fin = fopen(fname, "r");
 
     int n; double RADIUS;
-    fscanf(fin, "%d %lf",&n, &RADIUS);
+    // fscanf(fin, "%d %lf",&n, &RADIUS);
+    scanf("%d %lf",&n, &RADIUS);
     POINT S[n];
     for(int i=0; i<n; i++){
         POINT temp;
-        fscanf(fin, "%lf%lf", &temp.x, &temp.y);
+        // fscanf(fin, "%lf%lf", &temp.x, &temp.y);
+        scanf("%lf%lf", &temp.x, &temp.y);
         S[i] = temp;
     }
 
@@ -247,12 +250,12 @@ int main(){
 
     POINT *UH = (POINT *)malloc(sizeof(POINT)*n);
     int uh = CH(S, n, 'U', UH);
-    printf("\n+++ Upper hull\n");
+    printf("\n+++ Upper Hull\n");
     print(UH, uh);
 
     POINT *LH = (POINT *)malloc(sizeof(POINT)*n);
     int lh = CH(S, n, 'L', LH);
-    printf("\n+++ Lower hull\n");
+    printf("\n+++ Lower Hull\n");
     print(LH, lh);
 
     LINE *T = (LINE *)malloc(sizeof(LINE)*(uh+lh));
