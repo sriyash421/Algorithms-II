@@ -176,7 +176,7 @@ double get_arc_angle(LINE line, char flag){
         return -(PI/2 - angle);
 }
 
-void contzone(POINT *UH, int uh, POINT *LH, int lh, int r, LINE *T, ARC *A){
+void contzone(POINT *UH, int uh, POINT *LH, int lh, double r, LINE *T, ARC *A){
     /*Function to calculate the boundary of the containment zone*/
     int t=0, a=0, i=0;
     POINT pnull = {0,0};
